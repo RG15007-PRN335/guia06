@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Usuarios</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+                <f:view>
+            <h:form id="tabla_datos">
+                <h1 align="left"><h:outputText value="Usuarios"/></h1>
+                
+                <p:dataTable value="#{frmUsuario.modelo}"
+                     var="u"
+                     lazy="true"
+                     paginator="true"
+                     rows="5"
+                     selectionMode="single"
+                     selection="#{frmUsuario.registro}"
+                     disabledSelection="#{frmUsuario.seleccions}">
+
+                    <p:ajax update=":frm_detalle:formulario :frm_detalle:btns" listener="#{frmUsuario.cambiarSeleccion()}" event="rowSelect"/>
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="ID"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.idUsuario}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="APELLIDOS"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.apellidos}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="NOMBRES"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.nombres}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="FECHA DE NACIMIENTO"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.fechaNacimiento}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="ACTIVO"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.activo}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="COMENTARIOS"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.comentarios}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="USERNAME"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.username}"/>
+                    </p:column>
+                    
+                    <p:column>
+                            <f:facet name="header">
+                                    <h:outputText value="PASSWORD"/>
+                            </f:facet>		
+                        <h:outputText value="#{u.password}"/>
+                    </p:column>
+             </p:dataTable>
+          </h:form>
+          <br/>
+          
+          <h:form id="frm_detalle" >
+              <h2 align="left">Crear / Editar</h2>
+             <p:panel id="formulario">
+              
+                <p:focus context="formulario"/>
+                
+                <p:panelGrid id="grid_input" columns="3">
+
+                       <h:outputLabel for="id" value="ID"/>
+                       <p:inputText id="id" value="#{frmUsuario.registro.idUsuario}"
+                                     label="id" readonly="true"/>
+                     <p:message id="msmid" for="id"/>
+
+                      <h:outputLabel for="name" value="APELLIDOS"/>
+                      <p:inputText id="name" value="#{frmUsuario.registro.apellidos}" label="name"
+                                  required="true" readonly="false"/>
+                     <p:message id="msname" for="name"/>
+                     
+                     <h:outputLabel for="name" value="NOMBRES"/>
+                     <p:inputText id="name" value="#{frmUsuario.registro.nombres}" label="name"
+                                  required="true" readonly="false"/>
+                     <p:message id="msname" for="name"/>
+
+                     <h:outputLabel for="name" value="FECHA DE NACIMIENTO"/>
+                     <p:inputText id="name" value="#{frmUsuario.registro.fechaNacimiento}" label="name"
+                                  required="true" readonly="false"/>
+                     <p:message id="msname" for="name"/>
+                     
+                     <h:outputLabel for="actived" value="ACTIVO"/>
+                     <p:selectBooleanCheckbox id="actived" value="#{frmUsuario.registro.activo}"
+                                              disabled="false"/>
+                     <p:message id="msactived" for="actived"/>
+
+                     <h:outputLabel for="description" value="COMENTARIOS"/>
+                     <p:inputTextarea id="description" value="#{frmUsuario.registro.comentarios}" label="description"
+                                      required="true" readonly="false"/>
+                     <p:message id="msdescription" for="description"/>
+
+                     <h:outputLabel for="description" value="USERNAME"/>
+                     <p:inputTextarea id="description" value="#{frmUsuario.registro.username}" label="description"
+                                      required="true" readonly="false"/>
+                     <p:message id="msdescription" for="description"/>
+                     
+                     <h:outputLabel for="description" value="PASSWORD"/>
+                     <p:inputTextarea id="description" value="#{frmUsuario.registro.password}" label="description"
+                                      required="true" readonly="false"/>
+                     <p:message id="msdescription" for="description"/>
+                     
+                </p:panelGrid>
+             </p:panel>
+                 
+             <p:toolbar id="btns">
+                <f:facet name="left">
+                     <p:commandButton value="Crear" icon="ui-icon-disk"
+                                     validateClient="true" ajax="true"
+                                     update=":tabla_datos frm_detalle:formulario frm_detalle:btns"
+                                     rendered="#{frmUsuario.btnadd}"
+                                     actionListener="#{frmUsuario.guardarRegistro()}"/>
+
+                    <p:commandButton value="Cancelar" icon="ui-icon-cancel"
+                                     validateClient="true" ajax="true"
+                                     update=":tabla_datos frm_detalle:formulario frm_detalle:btns"
+                                     disabled="false" resetValues="true"
+                                     actionListener="#{frmUsuario.cancelar()}"
+                                     immediate="true"/>
+                                     
+                  <p:commandButton value="Eliminar" icon="ui-icon-trash"
+                                     validateClient="true" ajax="true"
+                                     update=":tabla_datos frm_detalle:formulario frm_detalle:btns"
+                                     rendered="#{frmUsuario.botones}"
+                                     actionListener="#{frmUsuario.Eliminar}"/>
+                    
+                    <p:commandButton value="Editar" icon="ui-icon-pencil"
+                                     validateClient="true" ajax="true"
+                                     update=":tabla_datos frm_detalle:formulario frm_detalle:btns"
+                                     rendered="#{frmUsuario.botones}"
+                                     actionListener="#{frmUsuario.Modificar}"/>  
+                    
+                   
+               </f:facet>
+             </p:toolbar>
+          </h:form>
+       </f:view>
+            
+            
+        </h:body>
+
+    </f:view>
+</html>
+
